@@ -82,12 +82,13 @@ const run = async () => {
     const baseLockSHA = baseTree.data.tree.filter((file) => file.path === 'package-lock.json')[0]
       .sha
     debug('Base lockfile SHA: ' + baseLockSHA)
-
+    
     const baseLockData = await octokit.request('GET /repos/{owner}/{repo}/git/blobs/{file_sha}', {
       ...oktokitParams,
       file_sha: baseLockSHA,
     })
-
+    
+    debug('Base lockfile data: ' + JSON.stringify(baseLockData))
     if (!baseLockData || !baseLockData.data || !baseLockData.data.content) {
       throw Error('💥 Cannot fetch repository base lock file, aborting!')
     }
